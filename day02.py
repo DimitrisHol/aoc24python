@@ -1,41 +1,59 @@
-def isGradual(levels) : 
-     
-     # must be either ascending or descending
-     # change must be between 1, 2, or 3.
+def ascOrDesc(levels) : 
 
-     ascending = levels.copy()
-     descending = levels.copy()
-     
-     descending.sort()
-     ascending.sort(reverse = True)
+    ascending = levels.copy()
+    descending = levels.copy()
+    
+    descending.sort()
+    ascending.sort(reverse = True)
 
-    #  print(levels, ascending, descending)
+    return levels == ascending or levels == descending
 
-     if levels == ascending or levels == descending : 
+def validDIff(levels) : 
+
+    for i in range(len(levels) -1 ) : 
+        diff = abs(int(levels[i]) - int(levels[i+1]))
+
+        if diff > 3 or diff < 1: 
+            return False
         
-        for i in range(len(levels) -1 ) : 
-            diff = abs(int(levels[i]) - int(levels[i+1]))
+    return True
 
-            if diff > 3 or diff < 1: 
-                return False
-        
+def isGradualPart1(levels) : 
+     
+    if ascOrDesc(levels) and validDIff(levels) : 
         return True
 
-     else : 
-         return False
+def isGradualPart2(levels) :  
 
+    if ascOrDesc(levels) and validDIff(levels) : 
+        return True
+    else : 
+
+        for i in range(len(levels)) : 
+
+            levelCopy = levels.copy()
+            levelCopy.pop(i)
+
+            if ascOrDesc(levelCopy) and validDIff(levelCopy) : 
+                return True
+        else : 
+            return False
+        
 with open("input/day02.txt", "r") as sourceFile : 
 
-    safeCounter = 0
+    safePart1 = 0
+    safePart2 = 0
 
     for line in sourceFile : 
         line = line.strip()
 
         levels = [int(x) for x in line.split(" ")]
 
-        print(levels, isGradual(levels))
+        if (isGradualPart1(levels)) : 
+            safePart1 += 1
 
-        if (isGradual(levels)) : 
-            safeCounter += 1
+        if (isGradualPart2(levels)) : 
+            safePart2 += 1
 
-    print(safeCounter)
+    print(safePart1)
+    print(safePart2)
