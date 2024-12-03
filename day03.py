@@ -1,21 +1,30 @@
 import re
 
+
 with open("input/day03.txt", "r") as sourceFile : 
 
-    total = 0 
+    totalPart1 = 0 
+    totalPart2 = 0 
+    multiply = True
 
     for line in sourceFile : 
         line = line.strip()
 
-        pattern = r'mul\((\d{1,3}),(\d{1,3})\)'
+        pattern = r'(mul\(\d{1,3},\d{1,3}\)|do\(\)|don\'t\(\))'
 
         matches = re.findall(pattern, line)
 
-        for x, y in matches : 
+        for x in matches : 
 
-            total += int(x) * int(y)
+            if x == "don\'t()" : 
+                multiply = False
+            elif x == "do()" : 
+                multiply = True
+            else : 
+                value = [int(y) for y in x[4:len(x) -1].split(",")]
+                totalPart1 += value[0] * value[1]
+                if multiply : 
+                    totalPart2 += value[0] * value[1]
 
-    print(total)
-
-
-        
+    print(totalPart1)
+    print(totalPart2)
