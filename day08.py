@@ -28,6 +28,7 @@ maximumX = len(grid)
 maximumY = len(row)
 
 antinodes = set()
+antinodesPart2 = set()
 
 for key, values in charactersCoordinates.items() : 
 
@@ -48,15 +49,23 @@ for key, values in charactersCoordinates.items() :
             seAntiNodeX = pair[1][0] + diffX
             seAntiNodeY = pair[1][1] + diffY
 
-            while antiNodeWithinLimits(nwAntiNodeX, nwAntiNodeY, maximumX, maximumY) : 
+            if antiNodeWithinLimits(nwAntiNodeX, nwAntiNodeY, maximumX, maximumY) : 
                 antinodes.add(str(nwAntiNodeX) + "|" + str(nwAntiNodeY))
+                # grid[nwAntiNodeX][nwAntiNodeY] = "#"
+
+            if antiNodeWithinLimits(seAntiNodeX, seAntiNodeY, maximumX, maximumY) : 
+                antinodes.add(str(seAntiNodeX) + "|" + str(seAntiNodeY))
+                # grid[seAntiNodeX][seAntiNodeY] = "#"
+
+            while antiNodeWithinLimits(nwAntiNodeX, nwAntiNodeY, maximumX, maximumY) : 
+                antinodesPart2.add(str(nwAntiNodeX) + "|" + str(nwAntiNodeY))
                 grid[nwAntiNodeX][nwAntiNodeY] = "#"
 
                 nwAntiNodeX = nwAntiNodeX - diffX
                 nwAntiNodeY = nwAntiNodeY - diffY
 
             while antiNodeWithinLimits(seAntiNodeX, seAntiNodeY, maximumX, maximumY) : 
-                antinodes.add(str(seAntiNodeX) + "|" + str(seAntiNodeY))
+                antinodesPart2.add(str(seAntiNodeX) + "|" + str(seAntiNodeY))
                 grid[seAntiNodeX][seAntiNodeY] = "#"
 
                 seAntiNodeX = seAntiNodeX + diffX
@@ -72,15 +81,23 @@ for key, values in charactersCoordinates.items() :
             swAntiNodeX = pair[1][0] + diffX
             swAntiNodeY = pair[1][1] - diffY
 
-            while antiNodeWithinLimits(neAntiNodeX, neAntiNodeY, maximumX, maximumY) : 
+            if antiNodeWithinLimits(neAntiNodeX, neAntiNodeY, maximumX, maximumY) : 
                 antinodes.add(str(neAntiNodeX) + "|" + str(neAntiNodeY))
+                grid[neAntiNodeX][neAntiNodeY] = "#"
+
+            if antiNodeWithinLimits(swAntiNodeX, swAntiNodeY, maximumX, maximumY) : 
+                antinodes.add(str(swAntiNodeX) + "|" + str(swAntiNodeY))
+                grid[swAntiNodeX][swAntiNodeY] = "#"
+
+            while antiNodeWithinLimits(neAntiNodeX, neAntiNodeY, maximumX, maximumY) : 
+                antinodesPart2.add(str(neAntiNodeX) + "|" + str(neAntiNodeY))
                 grid[neAntiNodeX][neAntiNodeY] = "#"
 
                 neAntiNodeX = neAntiNodeX - diffX
                 neAntiNodeY = neAntiNodeY + diffY
 
             while antiNodeWithinLimits(swAntiNodeX, swAntiNodeY, maximumX, maximumY) : 
-                antinodes.add(str(swAntiNodeX) + "|" + str(swAntiNodeY))
+                antinodesPart2.add(str(swAntiNodeX) + "|" + str(swAntiNodeY))
                 grid[swAntiNodeX][swAntiNodeY] = "#"
 
                 swAntiNodeX = swAntiNodeX + diffX
@@ -92,5 +109,5 @@ for index in range(len(grid)) :
         if charactersCoordinates.get(grid[index][j]) : 
             antenaAntinodes += 1
 
-# print("Part 1:", len(antinodes) )
-print("Part 2:", len(antinodes) + antenaAntinodes)
+print("Part 1:", len(antinodes))
+print("Part 2:", len(antinodesPart2) + antenaAntinodes)
