@@ -6,7 +6,7 @@ def antiNodeWithinLimits(x, y, maxX, maxY) :
     return x >= 0 and y >= 0 and x <= maxX-1 and y <= maxY-1 
 
 
-with open("input/day08.txt", "r") as sourceFile : 
+with open("input/test/day08exp.txt", "r") as sourceFile : 
 
     grid = []
     charactersCoordinates = defaultdict(list)
@@ -51,30 +51,56 @@ for key, values in charactersCoordinates.items() :
             print("WHAT THE FUCK ")
             exit(1)
         
-        # print(pair[0], pair[1], "diff[", diffX, diffY, "]")
+        print(pair[0], pair[1], "diff[", diffX, diffY, "]")
 
-        nwAntiNodeX = pair[0][0] - diffX
-        nwAntiNodeY = pair[0][1] - diffY
+        # A .
+        # . A
+        if pair[0][1] < pair[1][1] : 
 
-        seAntiNodeX = pair[1][0] + diffX
-        seAntiNodeY = pair[1][1] + diffY
+            nwAntiNodeX = pair[0][0] - diffX
+            nwAntiNodeY = pair[0][1] - diffY
 
-        # print("possible anti-node 1: ", nwAntiNodeX, nwAntiNodeY)
-        # print("possible anti-node 2: ", seAntiNodeX, seAntiNodeY)
+            seAntiNodeX = pair[1][0] + diffX
+            seAntiNodeY = pair[1][1] + diffY
 
-        if antiNodeWithinLimits(nwAntiNodeX, nwAntiNodeY, maximumX, maximumY) : 
-            antinodes.add(str(nwAntiNodeX) + "|" + str(nwAntiNodeY))
-            grid[nwAntiNodeX][nwAntiNodeY] = "#"
+            # print("possible anti-node 1: ", nwAntiNodeX, nwAntiNodeY)
+            # print("possible anti-node 2: ", seAntiNodeX, seAntiNodeY)
 
-        if antiNodeWithinLimits(seAntiNodeX, seAntiNodeY, maximumX, maximumY) : 
-            antinodes.add(str(seAntiNodeX) + "|" + str(seAntiNodeY))
-            grid[seAntiNodeX][seAntiNodeY] = "#"
+            if antiNodeWithinLimits(nwAntiNodeX, nwAntiNodeY, maximumX, maximumY) : 
+                antinodes.add(str(nwAntiNodeX) + "|" + str(nwAntiNodeY))
+                grid[nwAntiNodeX][nwAntiNodeY] = "#"
+
+            if antiNodeWithinLimits(seAntiNodeX, seAntiNodeY, maximumX, maximumY) : 
+                antinodes.add(str(seAntiNodeX) + "|" + str(seAntiNodeY))
+                grid[seAntiNodeX][seAntiNodeY] = "#"
+        
+        else : 
+            # . A
+            # A .
+
+            nwAntiNodeX = pair[0][0] - diffX
+            nwAntiNodeY = pair[0][1] + diffY
+
+            seAntiNodeX = pair[1][0] + diffX
+            seAntiNodeY = pair[1][1] - diffY
+
+            # print("possible anti-node 1: ", nwAntiNodeX, nwAntiNodeY)
+            # print("possible anti-node 2: ", seAntiNodeX, seAntiNodeY)
+
+            if antiNodeWithinLimits(nwAntiNodeX, nwAntiNodeY, maximumX, maximumY) : 
+                antinodes.add(str(nwAntiNodeX) + "|" + str(nwAntiNodeY))
+                grid[nwAntiNodeX][nwAntiNodeY] = "#"
+
+            if antiNodeWithinLimits(seAntiNodeX, seAntiNodeY, maximumX, maximumY) : 
+                antinodes.add(str(seAntiNodeX) + "|" + str(seAntiNodeY))
+                grid[seAntiNodeX][seAntiNodeY] = "#"
 
 
-print(antinodes, len(antinodes))
+print(antinodes)
+print(len(antinodes))
 
-# for row in grid : 
-#     print(row)
+for row in grid : 
+    print(row)
         
 # 470 too high
 
