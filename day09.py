@@ -60,3 +60,44 @@ for index in range(len(blocks)) :
     checkSum += index * blocks[index]
 
 print("part1 :", checkSum)
+
+
+# part 2 : 
+# blocks = []
+# counter = 0 
+
+# for i in range(len(row)) : 
+
+#     if i == 0 or i % 2 == 0 : 
+
+#         # for i in range(int(row[i])) : 
+#         blocks.append((row[i], counter))
+#         counter += 1
+        
+#     else : 
+#         # for i in range(int(row[i])) : 
+#         blocks.append((row[i], "."))
+
+# print(blocks)
+
+
+# while True : 
+
+#     fileSize = -1
+#     listId = ""
+
+#     for movingFileIndex in range(len(blocks), 0, -1) : 
+
+#         if blocks[movingFileIndex][1] == "." :
+#             continue
+
+#         fileSize = int(blocks[movingFileIndex][0])
+#         listId = blocks[movingFileIndex][1]
+
+#     for segmentIndex in range(len(blocks)) : 
+#         if blocks[segmentIndex][1] == "." and int(blocks[segmentIndex][0]) == fileSize : 
+#             blocks[segmentIndex][1] = listId`
+
+
+        
+    
