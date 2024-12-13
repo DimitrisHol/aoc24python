@@ -105,7 +105,6 @@ for key in adjacenyList.keys() :
             stack.append(neighbour)
 
     regionMap[regionID] = list(groupCoordinates)    
-    # print(regionMap)
 
 perimeterCount = defaultdict(int)
 
@@ -137,7 +136,7 @@ regionMapPerimeter = defaultdict(int)
 
 for regionId, regions in regionMap.items() : 
 
-    print("ID : ", regionId)
+    # print("ID : ", regionId)
 
     xValues = [int(item.split('|')[0]) for item in regions]
     yValues = [int(item.split('|')[1]) for item in regions]
@@ -219,14 +218,9 @@ for regionId, regions in regionMap.items() :
             localSum += count_teeth_from_indices(westBlocks)
         # print("west blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
-
             
-for row in grid : 
-    print(row)
-
 part1Result = 0 
 part2Result = 0 
-
 
 for key, perimeter in perimeterCount.items() : 
 
@@ -235,10 +229,9 @@ for key, perimeter in perimeterCount.items() :
 
 for key, perimeter in regionMapPerimeter.items() : 
 
-    print("Key:", key," ||" ,regionCount[key],"*" ,  perimeter, regionCount[key] * perimeter)
+    # print("Key:", key," ||" ,regionCount[key],"*" ,  perimeter, regionCount[key] * perimeter)
     part2Result += regionCount[key] * regionMapPerimeter[key]
 
 
 print("part 1:", part1Result)
 print("part 2:", part2Result)
-
