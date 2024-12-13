@@ -4,10 +4,36 @@ def positionWithinBounds(x, y, maxX, maxY) :
     return x >= 0 and y >= 0 and x <= maxX -1 and y <= maxY -1
 
 
+def count_teeth_from_indices(indices):
+    if not indices:
+        return 0
+    
+    count = 0
+    clusters = []
+    current_cluster = [indices[0]]
+
+    # Step 1: Group consecutive indices into clusters
+    for i in range(1, len(indices)):
+        if indices[i] == indices[i - 1] + 1:  # If it's consecutive
+            current_cluster.append(indices[i])
+        else:
+            clusters.append(current_cluster)
+            current_cluster = [indices[i]]
+    clusters.append(current_cluster)  # Add the last cluster
+    
+    # Step 2: Count the teeth by checking the isolation of each cluster
+    for cluster in clusters:
+        left_gap = cluster[0] == 0 or (cluster[0] - 1) not in indices  # Left edge is clear
+        right_gap = (cluster[-1] + 1) not in indices  # Right edge is clear
+        if left_gap or right_gap:
+            count += 1
+            
+    return count
+
 rowNum = 0
 grid = []
 
-with open("input/test/day12large.txt", "r") as sourceFile : 
+with open("input/day12.txt", "r") as sourceFile : 
 
     for line in sourceFile : 
 
@@ -143,26 +169,18 @@ for regionId, regions in regionMap.items() :
         topBlocks.sort()
         if len(topBlocks) == 1 : 
             localSum = 1
-        elif len(topBlocks) - 1 == sum(abs(topBlocks[i+1] - topBlocks[i]) for i in range(len(topBlocks) - 1)) :  
-            localSum = 1
         else : 
-            for i in range(len(topBlocks) - 1) : 
-                if abs(topBlocks[i] - topBlocks[i+1]) >= 2 : 
-                    localSum += 1
-        print("top blocks sum :", localSum)
+            localSum += count_teeth_from_indices(topBlocks)
+        # print("top blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
         localSum = 0
         botBlocks.sort()
         if len(botBlocks) == 1 : 
             localSum = 1
-        elif len(botBlocks) -1 == sum(abs(botBlocks[i+1] - botBlocks[i]) for i in range(len(botBlocks) - 1)) :  
-            localSum = 1
         else : 
-            for i in range(len(botBlocks) - 1) : 
-                if abs(botBlocks[i] - botBlocks[i+1]) >= 2 : 
-                    localSum += 1
-        print("bot blocks sum :", localSum)
+            localSum += count_teeth_from_indices(botBlocks)
+        # print("bot blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
     for i in range(minY, maxY + 1) :
@@ -188,26 +206,18 @@ for regionId, regions in regionMap.items() :
         eastBlocks.sort()
         if len(eastBlocks) == 1 : 
             localSum = 1
-        elif len(eastBlocks) -1 == sum(abs(eastBlocks[i+1] - eastBlocks[i]) for i in range(len(eastBlocks) - 1)) :  
-            localSum = 1
         else : 
-            for i in range(len(eastBlocks) - 1) : 
-                if abs(eastBlocks[i] - eastBlocks[i+1]) >= 2 : 
-                    localSum += 1
-        print("east blocks sum :", localSum)
+            localSum += count_teeth_from_indices(eastBlocks)
+        # print("east blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
         localSum = 0
         westBlocks.sort()
         if len(westBlocks) == 1 : 
             localSum = 1
-        elif len(westBlocks) -1 == sum(abs(westBlocks[i+1] - westBlocks[i]) for i in range(len(westBlocks) - 1)) :  
-            localSum = 1
         else : 
-            for i in range(len(westBlocks) - 1) : 
-                if abs(westBlocks[i] - westBlocks[i+1]) >= 2 : 
-                    localSum += 1
-        print("west blocks sum :", localSum)
+            localSum += count_teeth_from_indices(westBlocks)
+        # print("west blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
             
