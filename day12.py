@@ -7,7 +7,7 @@ def positionWithinBounds(x, y, maxX, maxY) :
 rowNum = 0
 grid = []
 
-with open("input/day12.txt", "r") as sourceFile : 
+with open("input/test/day12large.txt", "r") as sourceFile : 
 
     for line in sourceFile : 
 
@@ -16,7 +16,6 @@ with open("input/day12.txt", "r") as sourceFile :
         grid.append(row)
 
         rowNum +=1
-
 
 adjacenyList = {}
 
@@ -112,6 +111,8 @@ regionMapPerimeter = defaultdict(int)
 
 for regionId, regions in regionMap.items() : 
 
+    print("ID : ", regionId)
+
     xValues = [int(item.split('|')[0]) for item in regions]
     yValues = [int(item.split('|')[1]) for item in regions]
 
@@ -139,27 +140,29 @@ for regionId, regions in regionMap.items() :
                 botBlocks.append(y)
 
         localSum = 0
+        topBlocks.sort()
         if len(topBlocks) == 1 : 
             localSum = 1
-        elif len(topBlocks) == maxY + 1 - minY : 
+        elif len(topBlocks) - 1 == sum(abs(topBlocks[i+1] - topBlocks[i]) for i in range(len(topBlocks) - 1)) :  
             localSum = 1
         else : 
-            topBlocks.sort()
             for i in range(len(topBlocks) - 1) : 
                 if abs(topBlocks[i] - topBlocks[i+1]) >= 2 : 
                     localSum += 1
+        print("top blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
         localSum = 0
+        botBlocks.sort()
         if len(botBlocks) == 1 : 
             localSum = 1
-        elif len(botBlocks) == maxY + 1 - minY : 
+        elif len(botBlocks) -1 == sum(abs(botBlocks[i+1] - botBlocks[i]) for i in range(len(botBlocks) - 1)) :  
             localSum = 1
         else : 
-            botBlocks.sort()
             for i in range(len(botBlocks) - 1) : 
                 if abs(botBlocks[i] - botBlocks[i+1]) >= 2 : 
                     localSum += 1
+        print("bot blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
     for i in range(minY, maxY + 1) :
@@ -182,35 +185,34 @@ for regionId, regions in regionMap.items() :
 
 
         localSum = 0
+        eastBlocks.sort()
         if len(eastBlocks) == 1 : 
             localSum = 1
-        elif len(eastBlocks) == maxX + 1 - minX : 
+        elif len(eastBlocks) -1 == sum(abs(eastBlocks[i+1] - eastBlocks[i]) for i in range(len(eastBlocks) - 1)) :  
             localSum = 1
         else : 
-            eastBlocks.sort()
             for i in range(len(eastBlocks) - 1) : 
                 if abs(eastBlocks[i] - eastBlocks[i+1]) >= 2 : 
                     localSum += 1
+        print("east blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
         localSum = 0
+        westBlocks.sort()
         if len(westBlocks) == 1 : 
             localSum = 1
-        elif len(westBlocks) == maxX + 1 - minX : 
+        elif len(westBlocks) -1 == sum(abs(westBlocks[i+1] - westBlocks[i]) for i in range(len(westBlocks) - 1)) :  
             localSum = 1
         else : 
-            westBlocks.sort()
             for i in range(len(westBlocks) - 1) : 
                 if abs(westBlocks[i] - westBlocks[i+1]) >= 2 : 
                     localSum += 1
+        print("west blocks sum :", localSum)
         regionMapPerimeter[regionId] += localSum
 
             
-print(regionMapPerimeter)
-
 for row in grid : 
     print(row)
-        
 
 part1Result = 0 
 part2Result = 0 
