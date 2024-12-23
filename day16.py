@@ -42,9 +42,6 @@ def dijkstra(startPosition, endPosition, maxCost) :
         else : 
             visited.add((x, y, direction))
 
-        if maxCost is not None and maxCost < cost : 
-            return -1, []
-
         # Check the one in front 
         coordinateDiff = nextCoordinates[direction]
 
@@ -111,13 +108,9 @@ print("Part 1 : ", part1Result)
 
 shortestPathDistance = part1Result
 
-counter = 0
 # Shortest path
 validOptions = set() 
 for node, distanceCost in distanceTable.items() : 
-
-    # percentage = ((counter) / len(distanceTable))
-    # print(f'{percentage * 100:.2f}')
 
     # doesn't make sense to continue if already too far away
     if distanceCost >= shortestPathDistance : 
@@ -130,8 +123,6 @@ for node, distanceCost in distanceTable.items() :
 
     if distanceCost + distanceToEnd == shortestPathDistance : 
         validOptions.add((node[0], node[1]))
-    
-    counter +=1
 
 # Also add the final position ;) 
 validOptions.add((endPosition[0], endPosition[1]))
