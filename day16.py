@@ -1,7 +1,8 @@
 import heapq
 from collections import defaultdict
+import time 
 
-def dijkstra(startPosition, endPosition, maxCost) : 
+def dijkstra(startPosition, endPosition) : 
 
     # 0 = N
     # 1 = E 
@@ -17,6 +18,8 @@ def dijkstra(startPosition, endPosition, maxCost) :
 
     # We don't need adjacency list, since we are moving forward
     # new nodes can only be ahead
+
+    pres = {}
 
     distance = defaultdict(lambda: 100000)
 
@@ -35,7 +38,7 @@ def dijkstra(startPosition, endPosition, maxCost) :
 
         if (x, y) == endPosition : 
             # print("Part 1 :", cost, "direction", direction)
-            return cost, distance
+            return cost, distance, pres
 
         if (x, y, direction) in visited : 
             continue
@@ -55,6 +58,7 @@ def dijkstra(startPosition, endPosition, maxCost) :
             if newCost < distance[(newX, newY, direction)] : 
                 distance[(newX, newY, direction)] = newCost
                 priorityQueue.append((newX, newY, direction, newCost))
+                pres[(newX, newY, direction)] = (x, y, direction)
 
         # Check two sides    
         newDirections = [(direction - 1) % 4, (direction + 1) % 4]
@@ -66,13 +70,14 @@ def dijkstra(startPosition, endPosition, maxCost) :
             if newCost < distance[(x, y, newDirection)] : 
                 distance[(x, y, newDirection)] = newCost
                 priorityQueue.append((x, y, newDirection, newCost))
+                pres[(x, y, newDirection)] = (x, y, direction)
 
         # We need to sort the priority queue
         priorityQueue.sort(key = lambda x: x[3])
 
-    return -1, []
+    return -1, [], {}
 
-with open("input/test/day16.txt", "r") as sourceFile : 
+with open("input/day16.txt", "r") as sourceFile : 
 
     grid = []
 
@@ -92,7 +97,7 @@ with open("input/test/day16.txt", "r") as sourceFile :
         rowNum += 1 
 
 print("Start", startPosition, "End",  endPosition)
-part1Result, distanceTable = dijkstra(startPosition, endPosition, None)
+part1Result, distanceTable, pres = dijkstra(startPosition, endPosition)
 print("Part 1 : ", part1Result)
 
 
@@ -108,6 +113,18 @@ print("Part 1 : ", part1Result)
 
 shortestPathDistance = part1Result
 
+# find the direction that we finished with : 
+for i in range(4) : 
+    if pres[(endPosition[0], endPosition[1], i)] : 
+        node = pres[(endPosition[0], endPosition[1], i)]
+        break
+fastBoys = set()
+
+# find the nodes in the original fastest path
+while node != startPosition : 
+    fastBoys.add((node[0], node[1]))
+    node = pres[node]
+
 # Shortest path
 validOptions = set() 
 for node, distanceCost in distanceTable.items() : 
@@ -116,8 +133,12 @@ for node, distanceCost in distanceTable.items() :
     if distanceCost >= shortestPathDistance : 
         continue
 
+    # we can skip nodes in the original fastest path
+    if (node[0],node[1]) in fastBoys : 
+        continue
+
     # Re-run shortest path to the end.
-    distanceToEnd, _ = dijkstra(node, endPosition, shortestPathDistance)
+    distanceToEnd, _ , _= dijkstra(node, endPosition)
     if distanceToEnd == -1 : 
         continue
 
@@ -127,4 +148,5 @@ for node, distanceCost in distanceTable.items() :
 # Also add the final position ;) 
 validOptions.add((endPosition[0], endPosition[1]))
 
-print("Part 2 :", len(validOptions))
+# still too slow :( 
+print(f"Part 2 : {len(validOptions) + len(fastBoys)} Elapsed time: {time.time() - startTime:.4f} seconds")
